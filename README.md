@@ -1,81 +1,41 @@
-# 🚗 Sistema de Gestión de Lavadero de Vehículos
+# 🚗 Sistema de Gestión de Lavadero - Aplicación de Escritorio
 
 ## 📌 Descripción
-Aplicación de escritorio desarrollada en **Python (Tkinter + MySQL)** para digitalizar la gestión de un lavadero de vehículos.  
-Permite registrar servicios, gestionar caja, controlar usuarios (administrador y secretario) y generar reportes de ingresos y estadísticas.
+Este proyecto es un **sistema de gestión para un lavadero de vehículos**, desarrollado en **Python (Tkinter + MySQL)** como aplicación de escritorio.  
+Se gestionan usuarios con dos roles principales:
 
-La aplicación reemplaza el registro manual en planillas físicas por un sistema seguro y centralizado.
+- **Administrador** 🛠️  
+  - Dashboard con métricas y reportes.  
+  - Gestión de usuarios y roles.  
+  - Definición de servicios y precios.  
+  - Reportes financieros.  
+  - Consulta de historial completo.  
 
----
-
-## 👥 Roles y Permisos
-
-### 🔑 Administrador (Admin)
-- Acceso total al sistema.
-- Panel **Dashboard** con estadísticas (gráficas de servicios, ingresos, vehículos atendidos).
-- Gestión de **usuarios y roles** (crear/eliminar secretarios).
-- CRUD de **servicios y precios**.
-- Acceso a **reportes financieros e historial de caja**.
-- Visualización de **historial de lavados**.
-
-### 📝 Secretario
-- Acceso restringido (no puede gestionar usuarios ni reportes financieros).
-- **Registrar vehículos y servicios** con los campos del formato físico:
-  - Hora, Vehículo, Placa, Tipo de lavado, Costo, %, Lavador, Observaciones, Método de pago.
-- **Consultar historial** de servicios registrados.
-- **Generar cierre de caja diario** (ingresos del día).
+- **Secretario** 🗂️  
+  - Registro de vehículos y servicios prestados.  
+  - Consulta de historial de servicios por cliente/vehículo.  
+  - Cierre de caja diario.  
 
 ---
 
-## 📊 Módulos del Sistema
+## ⚙️ Requisitos
+- **Python 3.x**  
+- **MySQL** (Workbench o XAMPP)  
+- Librerías necesarias (se instalarán con `requirements.txt`):  
+  - `mysql-connector-python`  
+  - `tkinter`  
+  - `pillow` (para imágenes, íconos)  
 
-1. **🔐 Login**
-   - Inicio de sesión por rol (admin / secretario).
-
-2. **📋 Gestión de servicios (Admin)**
-   - Crear, editar y eliminar tipos de lavados.
-   - Definir precios de cada servicio.
-
-3. **🛠️ Registro de lavados (Secretario)**
-   - Interfaz que replica la planilla física.
-   - Registro automático en la base de datos.
-   - Asociación de lavador y cálculo de comisiones.
-
-4. **📚 Historial de servicios**
-   - Búsqueda por fecha, vehículo, placa, lavador.
-   - Exportación a Excel/PDF (opcional).
-
-5. **💰 Caja**
-   - Registro automático de ingresos.
-   - Cierre de caja diario con resumen de ingresos/egresos.
-
-6. **📈 Dashboard (Admin)**
-   - Gráficas y métricas:
-     - Servicios más vendidos.
-     - Ingresos diarios/mensuales.
-     - Vehículos atendidos.
-     - Comisiones de lavadores.
+Instalar dependencias:
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
-## 🗂️ Estructura de Base de Datos (MySQL)
+## 📂 Estructura del Proyecto
 
-- **usuarios**
-  - id, usuario, password, rol
-
-- **servicios**
-  - id, nombre, precio, descripción
-
-- **Registros**
-  - id, fecha, hora, vehiculo, placa, tipo_lavado, costo, porcentaje, lavador, observaciones, pago, usuario_id
-
-- **caja**
-  - id, fecha, ingresos, egresos, balance, responsable
-
----
-
-- **Estructura de arcvhivos**
-
+```
 lavadero-escritorio/
 │
 ├── README.md                 # Documentación del proyecto
@@ -119,58 +79,47 @@ lavadero-escritorio/
 │
 └── docs/                     # Documentación adicional
     └── manual_usuario.md      # Manual de usuario
-
-## ⚙️ Requisitos
-
-- Python 3.10+
-- MySQL Server
-- Conector de Python para MySQL (`mysql-connector-python` o `pymysql`)
-- Librerías recomendadas:
-  - `tkinter`
-  - `pandas`
-  - `matplotlib`
+```
 
 ---
 
-## 🚀 Instalación
-
-1. Clonar el repositorio:
+## 🚀 Instalación y Uso
+1. Clonar el repositorio:  
    ```bash
-   git clone <url-del-repo>
-   cd lavadero-electron
+   git clone https://github.com/TU_USUARIO/lavadero-escritorio.git
+   cd lavadero-escritorio
    ```
-
-2. Crear y activar entorno virtual:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   venv\Scripts\activate   # Windows
-   ```
-
-3. Instalar dependencias:
+2. Crear base de datos en MySQL usando `database/schema.sql`.  
+3. Configurar credenciales en `database/db_config.py`.  
+4. Instalar dependencias:  
    ```bash
    pip install -r requirements.txt
    ```
-
-4. Configurar la base de datos MySQL:
-   - Crear base de datos `cleancar`
-   - Importar el archivo `schema.sql` (incluido en el proyecto).
-
-5. Ejecutar la aplicación:
+5. Ejecutar el programa:  
    ```bash
-   python main.py
+   python src/main.py
    ```
 
 ---
 
-## 📦 Futuras Mejoras
-
-- Exportación avanzada a Excel/PDF.
-- Reportes de comisiones individuales por lavador.
-- Módulo de egresos (gastos del lavadero).
-- Integración con facturación electrónica.
+## 📦 Empaquetado en .exe
+Cuando el sistema esté listo, se podrá generar un ejecutable en Windows:  
+```bash
+pip install pyinstaller
+pyinstaller --onefile --windowed src/main.py
+```
 
 ---
 
-## 👨‍💻 Autores
-- Proyecto académico desarrollado por el equipo de software victorius.
+## 🛠️ Roadmap
+- [ ] Implementar conexión a MySQL.  
+- [ ] Pantalla de Login.  
+- [ ] Módulo de secretario (registro, historial, caja).  
+- [ ] Módulo de administrador (dashboard, usuarios, servicios, reportes).  
+- [ ] Reportes financieros con gráficos.  
+- [ ] Empaquetado final en `.exe`.  
+
+---
+
+## 📄 Licencia
+Uso académico y educativo.
