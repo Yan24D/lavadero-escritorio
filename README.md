@@ -74,6 +74,52 @@ La aplicación reemplaza el registro manual en planillas físicas por un sistema
 
 ---
 
+- **Estructura de arcvhivos**
+
+lavadero-escritorio/
+│
+├── README.md                 # Documentación del proyecto
+├── .gitignore                # Ignorar archivos innecesarios
+├── requirements.txt          # Dependencias de Python
+│
+├── database/
+│   ├── db_config.py          # Configuración de conexión a MySQL
+│   └── schema.sql            # Script de creación de tablas
+│
+├── src/
+│   ├── main.py               # Punto de entrada de la app
+│   │
+│   ├── auth/
+│   │   └── login.py          # Pantalla de Login
+│   │
+│   ├── admin/                # Funcionalidades de administrador
+│   │   ├── dashboard.py      # Panel principal (gráficas, KPIs)
+│   │   ├── users.py          # Gestión de usuarios y roles
+│   │   ├── services.py       # Edición de servicios y precios
+│   │   ├── reports.py        # Reportes y finanzas
+│   │   └── history.py        # Historial completo
+│   │
+│   ├── secretary/            # Funcionalidades del secretario
+│   │   ├── register.py       # Registro de vehículos/servicios
+│   │   ├── history.py        # Consulta de historial
+│   │   └── cash.py           # Cierre de caja
+│   │
+│   ├── ui/                   # Interfaz gráfica y recursos
+│   │   ├── styles.py         # Estilos comunes
+│   │   └── components.py     # Botones, menús, tablas reutilizables
+│   │
+│   └── utils/                # Utilidades compartidas
+│       ├── validators.py     # Validaciones de datos
+│       └── helpers.py        # Funciones generales
+│
+├── tests/                    # Pruebas unitarias
+│   ├── test_auth.py
+│   ├── test_admin.py
+│   └── test_secretary.py
+│
+└── docs/                     # Documentación adicional
+    └── manual_usuario.md      # Manual de usuario
+
 ## ⚙️ Requisitos
 
 - Python 3.10+
