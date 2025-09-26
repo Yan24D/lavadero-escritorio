@@ -79,45 +79,43 @@ class LaundryApp:
     
     def load_admin_interface(self):
         """Cargar interfaz de administrador"""
-        self.root.deiconify()  # Mostrar ventana principal
-        self.root.geometry("1200x800")
-        self.root.title("Sistema Lavadero - Panel Administrador")
+        try:
+            from src.admin.admin_panel import AdminPanel
+            
+            self.root.deiconify()  # Mostrar ventana principal
+            AdminPanel(self.root, self.current_user, self.logout)
+            print("✅ Panel del administrador cargado exitosamente")
+            
+        except Exception as e:
+            print(f"❌ Error cargando panel del administrador: {e}")
+            # Fallback - mostrar mensaje temporal si falla
+            self.root.geometry("1200x800")
+            self.root.title("Sistema Lavadero - Panel Administrador")
+            
+            frame = tk.Frame(self.root, bg='#2c3e50', padx=20, pady=20)
+            frame.pack(fill='both', expand=True)
+            
+            title = tk.Label(
+                frame, 
+                text="❌ Error cargando interfaz de administrador", 
+                font=('Arial', 24, 'bold'),
+                fg='white',
+                bg='#2c3e50'
+            )
+            title.pack(pady=(50, 20))
+            
+            logout_btn = tk.Button(
+                frame,
+                text="Cerrar Sesión",
+                font=('Arial', 12),
+                bg='#e74c3c',
+                fg='white',
+                padx=30,
+                pady=10,
+                command=self.logout
+            )
+            logout_btn.pack(pady=20)
         
-        # Por ahora, mostrar mensaje temporal
-        frame = tk.Frame(self.root, bg='#2c3e50', padx=20, pady=20)
-        frame.pack(fill='both', expand=True)
-        
-        title = tk.Label(
-            frame, 
-            text=f"👋 Bienvenido, {self.current_user['nombre']}", 
-            font=('Arial', 24, 'bold'),
-            fg='white',
-            bg='#2c3e50'
-        )
-        title.pack(pady=(50, 20))
-        
-        subtitle = tk.Label(
-            frame,
-            text="Panel de Administrador",
-            font=('Arial', 16),
-            fg='#ecf0f1',
-            bg='#2c3e50'
-        )
-        subtitle.pack(pady=(0, 30))
-        
-        # Botón temporal de logout
-        logout_btn = tk.Button(
-            frame,
-            text="Cerrar Sesión",
-            font=('Arial', 12),
-            bg='#e74c3c',
-            fg='white',
-            padx=30,
-            pady=10,
-            command=self.logout
-        )
-        logout_btn.pack(pady=20)
-    
     def load_secretary_interface(self):
         
         """Cargar interfaz de secretario"""

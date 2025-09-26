@@ -1,13 +1,13 @@
-# Dependencias mínimas para empezar
+# Dependencias 
 mysql-connector-python==8.1.0
 
-# Opcional: Para cuando implementemos gráficas
+# gráficas
 # matplotlib==3.7.2
 # pandas==2.0.3
 # seaborn==0.12.2
 
-# Opcional: Para manejo de fechas
+#  manejo de fechas
 # python-dateutil==2.8.2
 
-# Opcional: Para exportar a Excel
+# Para exportar a Excel
 # openpyxl==3.1.2

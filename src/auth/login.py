@@ -61,7 +61,7 @@ class LoginWindow:
         # Campo Usuario
         user_label = tk.Label(
             inner_frame, 
-            text="Usuario:", 
+            text="Correo:", 
             font=('Arial', 12, 'bold'),
             bg='white',
             fg='#2c3e50'
@@ -157,9 +157,9 @@ class LoginWindow:
         try:
             # Consultar usuario en base de datos
             query = """
-                SELECT id, usuario, password, rol, nombre, email, activo 
+                SELECT id, nombre, email, password, rol 
                 FROM usuarios 
-                WHERE usuario = %s AND activo = 1
+                WHERE email = %s
             """
             
             result = db.execute_query(query, (username,))

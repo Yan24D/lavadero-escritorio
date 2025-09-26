@@ -24,7 +24,7 @@ class DatabaseConfig:
         self.host = env_vars.get('DB_HOST', 'localhost')
         self.user = env_vars.get('DB_USER', 'root')
         self.password = env_vars.get('DB_PASS', '')
-        self.database = env_vars.get('DB_NAME', 'lavadero')
+        self.database = env_vars.get('DB_NAME', 'lavadero_db')
         self.port = int(env_vars.get('DB_PORT', 3306))
         self.connection = None
     
