@@ -1,36 +1,39 @@
+"""
+Módulo de Gestión de Lavadores
+"""
+
 import tkinter as tk
 from tkinter import ttk, messagebox
-from database.db_config import db
+from datetime import datetime
+from .base_module import BaseModule
 
-class AdminLavadores:
+class LavadoresModule(BaseModule):
+    """Módulo para gestión completa de lavadores"""
     
-    def __init__(self, parent_frame):
-        self.parent_frame = parent_frame
-        self.setup_ui()
-
-    def setup_ui(self):
-        """Configurar la interfaz del módulo de lavadores"""
+    def setup_module(self):
+        """Configurar módulo de lavadores"""
         # Título del módulo
-        title_frame = tk.Frame(self.parent_frame, bg='#f8fafc')
-        title_frame.pack(fill='x', pady=(0, 20))
+        self.create_header()
+        
+        # Container con scroll para el contenido
+        self.create_scrollable_container()
+        
+        # Filtros de búsqueda
+        self.create_filters()
+        
+        # Tabla de lavadores
+        self.create_table()
+        
+        # Cargar datos iniciales
+        self.load_data()
+    
+    def create_header(self):
+        """Crear header del módulo"""
+        header_frame = tk.Frame(self.parent, bg='#f8fafc')
+        header_frame.pack(fill='x', pady=(0, 20))
         
         title_label = tk.Label(
-            title_frame,
-            text="🧑‍💼 Gestión de Lavadores",
-            font=('Segoe UI', 24, 'bold'),
-            fg='#1e293b',
-            bg='#f8fafc'
-        )
-        title_label.pack(side='left')
-        
-    def show_lavadores(self):
-        """Mostrar módulo de gestión de lavadores"""
-        # Título del módulo
-        title_frame = tk.Frame(self.content_area, bg='#f8fafc')
-        title_frame.pack(fill='x', pady=(0, 20))
-        
-        title_label = tk.Label(
-            title_frame,
+            header_frame,
             text="🧑‍💼 Gestión de Lavadores",
             font=('Segoe UI', 24, 'bold'),
             fg='#1e293b',
@@ -40,7 +43,7 @@ class AdminLavadores:
         
         # Botón Agregar Lavador
         add_btn = tk.Button(
-            title_frame,
+            header_frame,
             text="➕ Agregar Lavador",
             font=('Segoe UI', 12, 'bold'),
             bg='#059669',
@@ -49,51 +52,39 @@ class AdminLavadores:
             padx=20,
             pady=10,
             cursor='hand2',
-            command=self.show_add_lavador_form
+            command=self.show_add_form
         )
         add_btn.pack(side='right')
-        
-        # Container con scroll para el contenido
-        self.create_scrollable_container()
-        
-        # Filtros de búsqueda
-        self.create_lavadores_filters()
-        
-        # Tabla de lavadores
-        self.create_lavadores_table()
-        
-        # Cargar datos iniciales
-        self.load_lavadores_data()
-
+    
     def create_scrollable_container(self):
-        """Crear container con scroll para lavadores"""
+        """Crear container con scroll"""
         # Canvas y scrollbar para scroll vertical
-        self.lavadores_canvas = tk.Canvas(self.content_area, bg='#f8fafc')
-        self.lavadores_scrollbar = ttk.Scrollbar(self.content_area, orient="vertical", command=self.lavadores_canvas.yview)
-        self.lavadores_scrollable_frame = tk.Frame(self.lavadores_canvas, bg='#f8fafc')
+        self.canvas = tk.Canvas(self.parent, bg='#f8fafc')
+        self.scrollbar = ttk.Scrollbar(self.parent, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = tk.Frame(self.canvas, bg='#f8fafc')
         
         # Configurar scroll
-        self.lavadores_scrollable_frame.bind(
+        self.scrollable_frame.bind(
             "<Configure>",
-            lambda e: self.lavadores_canvas.configure(scrollregion=self.lavadores_canvas.bbox("all"))
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         )
         
-        self.lavadores_canvas.create_window((0, 0), window=self.lavadores_scrollable_frame, anchor="nw")
-        self.lavadores_canvas.configure(yscrollcommand=self.lavadores_scrollbar.set)
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
         
         # Pack canvas y scrollbar
-        self.lavadores_canvas.pack(side="left", fill="both", expand=True)
-        self.lavadores_scrollbar.pack(side="right", fill="y")
+        self.canvas.pack(side="left", fill="both", expand=True)
+        self.scrollbar.pack(side="right", fill="y")
         
         # Habilitar scroll con rueda del mouse
         def _on_mousewheel(event):
-            self.lavadores_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+            self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
         
-        self.lavadores_canvas.bind("<MouseWheel>", _on_mousewheel)
-
-    def create_lavadores_filters(self):
-        """Crear filtros de búsqueda para lavadores"""
-        filters_frame = tk.Frame(self.lavadores_scrollable_frame, bg='white', relief='solid', borderwidth=1)
+        self.canvas.bind("<MouseWheel>", _on_mousewheel)
+    
+    def create_filters(self):
+        """Crear filtros de búsqueda"""
+        filters_frame = tk.Frame(self.scrollable_frame, bg='white', relief='solid', borderwidth=1)
         filters_frame.pack(fill='x', pady=(0, 20))
         
         filters_content = tk.Frame(filters_frame, bg='white')
@@ -119,10 +110,10 @@ class AdminLavadores:
             bg='white'
         ).pack(side='left', padx=(0, 10))
         
-        self.lavador_search_var = tk.StringVar()
+        self.search_var = tk.StringVar()
         search_entry = tk.Entry(
             search_frame,
-            textvariable=self.lavador_search_var,
+            textvariable=self.search_var,
             font=('Segoe UI', 10),
             relief='solid',
             borderwidth=1,
@@ -141,16 +132,16 @@ class AdminLavadores:
             padx=15,
             pady=5,
             cursor='hand2',
-            command=self.search_lavadores
+            command=self.search_data
         )
         search_btn.pack(side='left')
         
         # Bind para búsqueda en tiempo real
-        search_entry.bind('<KeyRelease>', lambda e: self.search_lavadores())
-
-    def create_lavadores_table(self):
+        search_entry.bind('<KeyRelease>', lambda e: self.search_data())
+    
+    def create_table(self):
         """Crear tabla de lavadores"""
-        table_frame = tk.Frame(self.lavadores_scrollable_frame, bg='white', relief='solid', borderwidth=1)
+        table_frame = tk.Frame(self.scrollable_frame, bg='white', relief='solid', borderwidth=1)
         table_frame.pack(fill='both', expand=True)
         
         # Título de la tabla
@@ -168,58 +159,58 @@ class AdminLavadores:
         # Crear Treeview
         columns = ('ID', 'Nombre', 'Apellido', 'Nombre Completo', 'Estado', 'Fecha Registro', 'Acciones')
         
-        self.lavadores_tree = ttk.Treeview(table_frame, columns=columns, show='headings', height=15)
+        self.tree = ttk.Treeview(table_frame, columns=columns, show='headings', height=15)
         
         # Configurar columnas
-        self.lavadores_tree.heading('ID', text='ID')
-        self.lavadores_tree.heading('Nombre', text='Nombre')
-        self.lavadores_tree.heading('Apellido', text='Apellido')
-        self.lavadores_tree.heading('Nombre Completo', text='Nombre Completo')
-        self.lavadores_tree.heading('Estado', text='Estado')
-        self.lavadores_tree.heading('Fecha Registro', text='Fecha Registro')
-        self.lavadores_tree.heading('Acciones', text='Acciones')
+        self.tree.heading('ID', text='ID')
+        self.tree.heading('Nombre', text='Nombre')
+        self.tree.heading('Apellido', text='Apellido')
+        self.tree.heading('Nombre Completo', text='Nombre Completo')
+        self.tree.heading('Estado', text='Estado')
+        self.tree.heading('Fecha Registro', text='Fecha Registro')
+        self.tree.heading('Acciones', text='Acciones')
         
         # Configurar ancho de columnas
-        self.lavadores_tree.column('ID', width=60, anchor='center')
-        self.lavadores_tree.column('Nombre', width=120)
-        self.lavadores_tree.column('Apellido', width=120)
-        self.lavadores_tree.column('Nombre Completo', width=180)
-        self.lavadores_tree.column('Estado', width=100, anchor='center')
-        self.lavadores_tree.column('Fecha Registro', width=140, anchor='center')
-        self.lavadores_tree.column('Acciones', width=120, anchor='center')
+        self.tree.column('ID', width=60, anchor='center')
+        self.tree.column('Nombre', width=120)
+        self.tree.column('Apellido', width=120)
+        self.tree.column('Nombre Completo', width=180)
+        self.tree.column('Estado', width=100, anchor='center')
+        self.tree.column('Fecha Registro', width=140, anchor='center')
+        self.tree.column('Acciones', width=120, anchor='center')
         
         # Menú contextual para acciones
-        self.lavadores_context_menu = tk.Menu(self.lavadores_tree, tearoff=0)
-        self.lavadores_context_menu.add_command(label="✏️ Editar", command=self.edit_lavador)
-        self.lavadores_context_menu.add_command(label="🗑️ Eliminar", command=self.delete_lavador)
-        self.lavadores_context_menu.add_separator()
-        self.lavadores_context_menu.add_command(label="📊 Ver Estadísticas", command=self.view_lavador_stats)
+        self.context_menu = tk.Menu(self.tree, tearoff=0)
+        self.context_menu.add_command(label="✏️ Editar", command=self.edit_item)
+        self.context_menu.add_command(label="🗑️ Eliminar", command=self.delete_item)
+        self.context_menu.add_separator()
+        self.context_menu.add_command(label="📊 Ver Estadísticas", command=self.view_stats)
         
         # Bind del menú contextual
-        self.lavadores_tree.bind("<Button-3>", self.show_lavador_context_menu)
+        self.tree.bind("<Button-3>", self.show_context_menu)
         
         # Scrollbar para la tabla
-        table_scrollbar = ttk.Scrollbar(table_frame, orient='vertical', command=self.lavadores_tree.yview)
-        self.lavadores_tree.configure(yscrollcommand=table_scrollbar.set)
+        table_scrollbar = ttk.Scrollbar(table_frame, orient='vertical', command=self.tree.yview)
+        self.tree.configure(yscrollcommand=table_scrollbar.set)
         
         # Pack
-        self.lavadores_tree.pack(side='left', fill='both', expand=True, padx=20, pady=(0, 20))
+        self.tree.pack(side='left', fill='both', expand=True, padx=20, pady=(0, 20))
         table_scrollbar.pack(side='right', fill='y', pady=(0, 20), padx=(0, 20))
-
-    def load_lavadores_data(self, search_term=""):
+    
+    def load_data(self, search_term=""):
         """Cargar datos de lavadores"""
         try:
             # Limpiar tabla
-            for item in self.lavadores_tree.get_children():
-                self.lavadores_tree.delete(item)
+            for item in self.tree.get_children():
+                self.tree.delete(item)
             
             # Query base
             base_query = """
                 SELECT id, nombre, apellido, 
-                    CONCAT(nombre, ' ', apellido) as nombre_completo,
-                    CASE WHEN activo = 1 THEN 'Activo' ELSE 'Inactivo' END as estado,
-                    DATE_FORMAT(creado_en, '%d/%m/%Y') as fecha_registro,
-                    activo
+                       CONCAT(nombre, ' ', apellido) as nombre_completo,
+                       CASE WHEN activo = 1 THEN 'Activo' ELSE 'Inactivo' END as estado,
+                       DATE_FORMAT(creado_en, '%d/%m/%Y') as fecha_registro,
+                       activo
                 FROM lavadores
                 WHERE 1=1
             """
@@ -234,14 +225,14 @@ class AdminLavadores:
             
             base_query += " ORDER BY nombre, apellido"
             
-            results = db.execute_query(base_query, params if params else None)
+            results = self.db.execute_query(base_query, params if params else None)
             
             if results:
                 for row in results:
                     # Colorear filas según el estado
                     tags = ('active',) if row['activo'] else ('inactive',)
                     
-                    self.lavadores_tree.insert('', 'end', values=(
+                    self.tree.insert('', 'end', values=(
                         row['id'],
                         row['nombre'],
                         row['apellido'],
@@ -252,47 +243,47 @@ class AdminLavadores:
                     ), tags=tags)
             
             # Configurar tags de colores
-            self.lavadores_tree.tag_configure('active', background='#f0fdf4')  # Verde claro
-            self.lavadores_tree.tag_configure('inactive', background='#fef2f2')  # Rojo claro
+            self.tree.tag_configure('active', background='#f0fdf4')  # Verde claro
+            self.tree.tag_configure('inactive', background='#fef2f2')  # Rojo claro
             
         except Exception as e:
             print(f"Error cargando lavadores: {e}")
             messagebox.showerror("Error", "Error al cargar la lista de lavadores")
-
-    def search_lavadores(self):
+    
+    def search_data(self):
         """Buscar lavadores"""
-        search_term = self.lavador_search_var.get().strip()
-        self.load_lavadores_data(search_term)
-
-    def show_lavador_context_menu(self, event):
-        """Mostrar menú contextual para lavador"""
-        item = self.lavadores_tree.identify_row(event.y)
+        search_term = self.search_var.get().strip()
+        self.load_data(search_term)
+    
+    def show_context_menu(self, event):
+        """Mostrar menú contextual"""
+        item = self.tree.identify_row(event.y)
         if item:
-            self.lavadores_tree.selection_set(item)
-            self.lavadores_context_menu.post(event.x_root, event.y_root)
-
-    def show_add_lavador_form(self):
+            self.tree.selection_set(item)
+            self.context_menu.post(event.x_root, event.y_root)
+    
+    def show_add_form(self):
         """Mostrar formulario para agregar lavador"""
-        self.show_lavador_form("Agregar Lavador", "add")
-
-    def edit_lavador(self):
+        self.show_form("Agregar Lavador", "add")
+    
+    def edit_item(self):
         """Editar lavador seleccionado"""
-        selected = self.lavadores_tree.selection()
+        selected = self.tree.selection()
         if not selected:
             messagebox.showwarning("Advertencia", "Seleccione un lavador para editar")
             return
         
         item = selected[0]
-        values = self.lavadores_tree.item(item, 'values')
+        values = self.tree.item(item, 'values')
         lavador_id = values[0]
         
         if not lavador_id:
             messagebox.showwarning("Advertencia", "No se puede editar este lavador")
             return
         
-        self.show_lavador_form("Editar Lavador", "edit", lavador_id)
-
-    def show_lavador_form(self, title, mode, lavador_id=None):
+        self.show_form("Editar Lavador", "edit", lavador_id)
+    
+    def show_form(self, title, mode, lavador_id=None):
         """Mostrar formulario para agregar/editar lavador"""
         # Crear ventana modal
         form_window = tk.Toplevel(self.parent)
@@ -388,7 +379,7 @@ class AdminLavadores:
         if mode == "edit" and lavador_id:
             try:
                 query = "SELECT nombre, apellido, activo FROM lavadores WHERE id = %s"
-                result = db.execute_query(query, (lavador_id,))
+                result = self.db.execute_query(query, (lavador_id,))
                 if result:
                     data = result[0]
                     nombre_var.set(data['nombre'])
@@ -417,7 +408,7 @@ class AdminLavadores:
         cancel_btn.pack(side='left')
         
         # Botón Guardar
-        def save_lavador():
+        def save_data():
             nombre = nombre_var.get().strip()
             apellido = apellido_var.get().strip()
             
@@ -435,12 +426,12 @@ class AdminLavadores:
                     params = (nombre, apellido, int(estado_var.get()), lavador_id)
                     success_msg = "Lavador actualizado correctamente"
                 
-                result = db.execute_insert(query, params) if mode == "add" else db.execute_update(query, params)
+                result = self.db.execute_insert(query, params) if mode == "add" else self.db.execute_update(query, params)
                 
                 if result is not None:
                     messagebox.showinfo("Éxito", success_msg)
                     form_window.destroy()
-                    self.load_lavadores_data()  # Recargar datos
+                    self.load_data()  # Recargar datos
                 else:
                     messagebox.showerror("Error", "No se pudo guardar el lavador")
                     
@@ -458,22 +449,22 @@ class AdminLavadores:
             padx=30,
             pady=12,
             cursor='hand2',
-            command=save_lavador
+            command=save_data
         )
         save_btn.pack(side='right')
         
         # Foco inicial
         nombre_entry.focus()
-
-    def delete_lavador(self):
+    
+    def delete_item(self):
         """Eliminar lavador seleccionado"""
-        selected = self.lavadores_tree.selection()
+        selected = self.tree.selection()
         if not selected:
             messagebox.showwarning("Advertencia", "Seleccione un lavador para eliminar")
             return
         
         item = selected[0]
-        values = self.lavadores_tree.item(item, 'values')
+        values = self.tree.item(item, 'values')
         lavador_id = values[0]
         nombre_completo = values[3]
         
@@ -484,7 +475,7 @@ class AdminLavadores:
         # Verificar si el lavador tiene registros asociados
         try:
             check_query = "SELECT COUNT(*) as count FROM registros WHERE lavador LIKE %s"
-            check_result = db.execute_query(check_query, (f"%{nombre_completo}%",))
+            check_result = self.db.execute_query(check_query, (f"%{nombre_completo}%",))
             
             if check_result and check_result[0]['count'] > 0:
                 # Confirmar si quiere desactivar en lugar de eliminar
@@ -492,18 +483,18 @@ class AdminLavadores:
                     "Lavador con registros",
                     f"El lavador '{nombre_completo}' tiene registros asociados.\n\n"
                     "¿Desea desactivarlo en lugar de eliminarlo?\n\n"
-                    "• SÍ: Desactivar lavador (recomendado)\n"
+                    "• Sí: Desactivar lavador (recomendado)\n"
                     "• NO: Cancelar operación"
                 )
                 
                 if confirm:
                     # Desactivar en lugar de eliminar
                     update_query = "UPDATE lavadores SET activo = 0 WHERE id = %s"
-                    result = db.execute_update(update_query, (lavador_id,))
+                    result = self.db.execute_update(update_query, (lavador_id,))
                     
                     if result:
                         messagebox.showinfo("Éxito", f"Lavador '{nombre_completo}' desactivado correctamente")
-                        self.load_lavadores_data()
+                        self.load_data()
                     else:
                         messagebox.showerror("Error", "No se pudo desactivar el lavador")
             else:
@@ -516,27 +507,27 @@ class AdminLavadores:
                 
                 if confirm:
                     delete_query = "DELETE FROM lavadores WHERE id = %s"
-                    result = db.execute_update(delete_query, (lavador_id,))
+                    result = self.db.execute_update(delete_query, (lavador_id,))
                     
                     if result:
                         messagebox.showinfo("Éxito", f"Lavador '{nombre_completo}' eliminado correctamente")
-                        self.load_lavadores_data()
+                        self.load_data()
                     else:
                         messagebox.showerror("Error", "No se pudo eliminar el lavador")
                         
         except Exception as e:
             print(f"Error eliminando lavador: {e}")
             messagebox.showerror("Error", f"Error al eliminar: {str(e)}")
-
-    def view_lavador_stats(self):
+    
+    def view_stats(self):
         """Ver estadísticas del lavador seleccionado"""
-        selected = self.lavadores_tree.selection()
+        selected = self.tree.selection()
         if not selected:
             messagebox.showwarning("Advertencia", "Seleccione un lavador para ver estadísticas")
             return
         
         item = selected[0]
-        values = self.lavadores_tree.item(item, 'values')
+        values = self.tree.item(item, 'values')
         nombre_completo = values[3]
         
         # Crear ventana de estadísticas
@@ -566,7 +557,7 @@ class AdminLavadores:
                 WHERE lavador = %s
             """
             
-            stats_data = db.execute_query(stats_query, (nombre_completo,))
+            stats_data = self.db.execute_query(stats_query, (nombre_completo,))
             
             # Título
             title_label = tk.Label(
@@ -645,3 +636,12 @@ class AdminLavadores:
         except Exception as e:
             print(f"Error cargando estadísticas: {e}")
             messagebox.showerror("Error", "Error al cargar estadísticas del lavador")
+    
+    def refresh(self):
+        """Refrescar datos del módulo"""
+        self.load_data()
+    
+    def cleanup(self):
+        """Limpiar recursos del módulo"""
+        # Cerrar cualquier ventana modal abierta si es necesario
+        pass

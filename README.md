@@ -7,8 +7,7 @@ Se gestionan usuarios con dos roles principales:
 - **Administrador** 🛠️  
   - Dashboard con métricas y reportes.  
   - Gestión de usuarios y roles.  
-  - Definición de servicios y precios.  
-  - Reportes financieros.  
+  - Definición de servicios y precios.   
   - Consulta de historial completo.  
 
 - **Secretario** 🗂️  
@@ -53,10 +52,11 @@ lavadero-escritorio/
 │   │   └── login.py          # Pantalla de Login
 │   │
 │   ├── admin/                # Funcionalidades de administrador
-│   │   ├── dashboard.py      # Panel principal (gráficas, KPIs)
-│   │   ├── users.py          # Gestión de usuarios y roles
-│   │   ├── services.py       # Edición de servicios y precios
-│   │   ├── reports.py        # Reportes y finanzas
+|   |   ├── base_module.py     # Clase base para todos los módulos del panel admin
+│   │   ├── admin_panel.py      # Panel principal (gráficas, KPIs)
+│   │   ├── dashboard.py          # Gestión de usuarios y roles
+│   │   ├── usuarios.py       # Edición de servicios y precios
+│   │   ├── servicios.py        # Reportes y finanzas
 │   │   └── history.py        # Historial completo
 │   │
 │   ├── secretary/            # Funcionalidades del secretario
@@ -112,11 +112,11 @@ pyinstaller --onefile --windowed src/main.py
 ---
 
 ## 🛠️ Roadmap
-- [ ] Implementar conexión a MySQL.  
-- [ ] Pantalla de Login.  
-- [ ] Módulo de secretario (registro, historial, caja).  
+- [x] Implementar conexión a MySQL.  
+- [x] Pantalla de Login.  
+- [x] Módulo de secretario (registro, historial, caja).  
 - [ ] Módulo de administrador (dashboard, usuarios, servicios, reportes).  
-- [ ] Reportes financieros con gráficos.  
+- [x] Reportes financieros con gráficos.  
 - [ ] Empaquetado final en `.exe`.  
 
 ---
