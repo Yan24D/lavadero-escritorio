@@ -10,7 +10,6 @@ from database.db_config import db
 # Importar módulos específicos
 from .dashboard import DashboardModule
 from .usuarios import UsuariosModule
-from .lavadores import LavadoresModule
 from .servicios import ServiciosModule
 from .historial import HistorialModule
 
@@ -30,7 +29,6 @@ class AdminPanel:
         self.modules = {
             'dashboard': DashboardModule,
             'usuarios': UsuariosModule,
-            'lavadores': LavadoresModule,
             'servicios': ServiciosModule,
             'historial': HistorialModule
         }
@@ -164,7 +162,7 @@ class AdminPanel:
         # Título del menú
         menu_title = tk.Label(
             self.sidebar_scrollable_frame,
-            text="📊 Panel de Control",
+            text="Panel de Control",
             font=('Segoe UI', 16, 'bold'),
             fg='#1e293b',
             bg='white'
@@ -175,7 +173,6 @@ class AdminPanel:
         menu_items = [
             ('dashboard', '📈 Dashboard', 'Estadísticas generales del negocio'),
             ('usuarios', '👥 Gestión de Usuarios', 'Administrar usuarios del sistema'),
-            ('lavadores', '🧑‍💼 Gestión de Lavadores', 'Administrar equipo de lavadores'),
             ('servicios', '⚙️ Servicios y Precios', 'Configurar servicios y tarifas'),
             ('historial', '📋 Historial Completo', 'Ver todos los registros')
         ]
@@ -201,23 +198,10 @@ class AdminPanel:
                 command=lambda mid=module_id: self.switch_module(mid)
             )
             btn.pack(fill='x')
-            
-            # Descripción del módulo
-            desc_label = tk.Label(
-                btn_frame,
-                text=description,
-                font=('Segoe UI', 9),
-                fg='#9ca3af',
-                bg='white',
-                anchor='w',
-                wraplength=240  # Para evitar que el texto se corte
-            )
-            desc_label.pack(fill='x', padx=20, pady=(0, 5))
-            
-            self.menu_buttons[module_id] = btn
+
         
         # Separador
-        separator = tk.Frame(self.sidebar_scrollable_frame, bg='#e5e7eb', height=1)
+        separator = tk.Frame(self.sidebar_scrollable_frame, bg='#e5e7eb', height=3)
         separator.pack(fill='x', padx=20, pady=20)
         
         # Información adicional

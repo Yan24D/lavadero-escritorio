@@ -186,19 +186,7 @@ class SecretaryRegisterPanel:
         """Mostrar pestaña de registro"""
         self.update_nav_buttons('register')
         self.clear_content()
-        
-        # Título de la sección
-        title_frame = tk.Frame(self.content_frame, bg='#f8fafc')
-        title_frame.pack(fill='x', pady=(0, 20))
-        
-        title_label = tk.Label(
-            title_frame,
-            text="Nuevo Registro de Servicio",
-            font=('Segoe UI', 20, 'bold'),
-            fg='#1e293b',
-            bg='#f8fafc'
-        )
-        title_label.pack(side='left')
+
         
         # Contenedor principal
         main_container = tk.Frame(self.content_frame, bg='#f8fafc')
@@ -706,16 +694,7 @@ class SecretaryRegisterPanel:
         """Mostrar pestaña de historial"""
         self.update_nav_buttons('history')
         self.clear_content()
-        
-        # Título
-        title_label = tk.Label(
-            self.content_frame,
-            text="Consultar Historial de Servicios",
-            font=('Segoe UI', 20, 'bold'),
-            fg='#1e293b',
-            bg='#f8fafc'
-        )
-        title_label.pack(anchor='w', pady=(0, 20))
+
         
         # Filtros
         filters_frame = tk.Frame(self.content_frame, bg='white', relief='solid', borderwidth=1)
@@ -723,16 +702,7 @@ class SecretaryRegisterPanel:
         
         filters_content = tk.Frame(filters_frame, bg='white')
         filters_content.pack(fill='x', padx=20, pady=15)
-        
-        # Título de filtros
-        filters_title = tk.Label(
-            filters_content,
-            text="🔍 Filtros de Búsqueda",
-            font=('Segoe UI', 14, 'bold'),
-            fg='#1e293b',
-            bg='white'
-        )
-        filters_title.pack(anchor='w', pady=(0, 15))
+
         
         # Fila de filtros
         filters_row = tk.Frame(filters_content, bg='white')
@@ -1009,16 +979,7 @@ class SecretaryRegisterPanel:
         """Mostrar pestaña de cierre de caja diario"""
         self.update_nav_buttons('cash')
         self.clear_content()
-        
-        # Título
-        title_label = tk.Label(
-            self.content_frame,
-            text="Cierre de Caja Diario",
-            font=('Segoe UI', 20, 'bold'),
-            fg='#1e293b',
-            bg='#f8fafc'
-        )
-        title_label.pack(anchor='w', pady=(0, 20))
+
         
         # Botones de acción superiores
         actions_frame = tk.Frame(self.content_frame, bg='#f8fafc')

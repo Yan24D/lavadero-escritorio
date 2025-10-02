@@ -45,19 +45,10 @@ class HistorialModule(BaseModule):
         """Crear header del módulo"""
         header_frame = tk.Frame(self.parent, bg='#f8fafc')
         header_frame.pack(fill='x', pady=(0, 20))
-        
-        title_label = tk.Label(
-            header_frame,
-            text="📋 Historial Completo de Servicios",
-            font=('Segoe UI', 24, 'bold'),
-            fg='#1e293b',
-            bg='#f8fafc'
-        )
-        title_label.pack(side='left')
-        
+       
         # Botones de acción
         actions_frame = tk.Frame(header_frame, bg='#f8fafc')
-        actions_frame.pack(side='right')
+        actions_frame.pack(side='left')
         
         # Botón Exportar Excel
         export_btn = tk.Button(

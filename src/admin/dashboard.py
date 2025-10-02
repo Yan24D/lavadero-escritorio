@@ -29,20 +29,11 @@ class DashboardModule(BaseModule):
         """Crear header del dashboard"""
         header_frame = tk.Frame(self.parent, bg='#f8fafc')
         header_frame.pack(fill='x', pady=(0, 30))
-        
-        # Título principal
-        title_label = tk.Label(
-            header_frame,
-            text="📈 Dashboard - Panel de Control",
-            font=('Segoe UI', 24, 'bold'),
-            fg='#1e293b',
-            bg='#f8fafc'
-        )
-        title_label.pack(side='left')
+
         
         # Selector de período
         period_frame = tk.Frame(header_frame, bg='#f8fafc')
-        period_frame.pack(side='right')
+        period_frame.pack(side='left')
         
         tk.Label(
             period_frame,
@@ -66,7 +57,7 @@ class DashboardModule(BaseModule):
             state='readonly',
             width=12
         )
-        month_combo.pack(side='left', padx=(0, 10))
+        month_combo.pack(side='right', padx=(0, 10))
         month_combo.bind('<<ComboboxSelected>>', self.on_period_change)
         
         # Combobox para año
@@ -81,23 +72,9 @@ class DashboardModule(BaseModule):
             state='readonly',
             width=8
         )
-        year_combo.pack(side='left', padx=(0, 10))
+        year_combo.pack(side='right', padx=(0, 10))
         year_combo.bind('<<ComboboxSelected>>', self.on_period_change)
-        
-        # Botón refrescar
-        refresh_btn = tk.Button(
-            period_frame,
-            text="🔄 Actualizar",
-            font=('Segoe UI', 10, 'bold'),
-            bg='#2563eb',
-            fg='white',
-            relief='flat',
-            padx=15,
-            pady=8,
-            cursor='hand2',
-            command=self.load_dashboard_data
-        )
-        refresh_btn.pack(side='left')
+
     
     def create_main_content(self):
         """Crear contenido principal del dashboard"""

@@ -33,15 +33,7 @@ class ServiciosModule(BaseModule):
         header_frame = tk.Frame(self.parent, bg='#f8fafc')
         header_frame.pack(fill='x', pady=(0, 20))
         
-        title_label = tk.Label(
-            header_frame,
-            text="⚙️ Gestión de Servicios y Precios",
-            font=('Segoe UI', 24, 'bold'),
-            fg='#1e293b',
-            bg='#f8fafc'
-        )
-        title_label.pack(side='left')
-        
+               
         # Botón Nuevo Servicio
         add_service_btn = tk.Button(
             header_frame,
@@ -55,7 +47,7 @@ class ServiciosModule(BaseModule):
             cursor='hand2',
             command=self.show_add_service_form
         )
-        add_service_btn.pack(side='right')
+        add_service_btn.pack(side='left')
     
     def create_tabs_section(self):
         """Crear sección con pestañas"""
@@ -91,18 +83,10 @@ class ServiciosModule(BaseModule):
         filters_content = tk.Frame(filters_frame, bg='white')
         filters_content.pack(fill='x', padx=20, pady=15)
         
-        # Título
-        tk.Label(
-            filters_content,
-            text="🔍 Filtros de Búsqueda",
-            font=('Segoe UI', 14, 'bold'),
-            fg='#1e293b',
-            bg='white'
-        ).pack(side='left')
-        
+
         # Campo de búsqueda
         search_frame = tk.Frame(filters_content, bg='white')
-        search_frame.pack(side='right')
+        search_frame.pack(side='left')
         
         tk.Label(
             search_frame,
