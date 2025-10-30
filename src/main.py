@@ -120,12 +120,12 @@ class LaundryApp:
         
         """Cargar interfaz de secretario"""
         try:
-            from src.secretary.register import SecretaryRegisterPanel
+            from secretary.secretary_panel import SecretaryPanel
             
             self.root.deiconify()  # Mostrar ventana principal
             
             # Crear panel del secretario
-            SecretaryRegisterPanel(self.root, self.current_user, self.logout)
+            SecretaryPanel(self.root, self.current_user, self.logout)
             print("✅ Panel del secretario cargado exitosamente")
             
         except Exception as e:

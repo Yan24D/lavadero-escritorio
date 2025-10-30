@@ -3,7 +3,6 @@ mysql-connector-python==8.1.0
 
 # gráficas
 # matplotlib==3.7.2
-# pandas==2.0.3
 # seaborn==0.12.2
 
 #  manejo de fechas
