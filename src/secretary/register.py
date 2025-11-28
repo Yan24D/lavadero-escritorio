@@ -229,7 +229,6 @@ class RegisterModule(BaseModule):
             {'value': 'motorcycle', 'display': 'Motocicleta'},
             {'value': 'car', 'display': 'Automóvil'},
             {'value': 'pickup', 'display': 'Camioneta'},
-            {'value': 'suv', 'display': 'SUV'},
             {'value': 'truck', 'display': 'Camión'}
         ]
         

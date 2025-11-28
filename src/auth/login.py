@@ -76,7 +76,7 @@ class LoginWindow:
         
         tk.Label(
             header_frame,
-            text="Clean Car ",
+            text="Quili Wash ",
             font=('Segoe UI', 22, 'bold'),
             fg='white',
             bg='#0d6efd'
@@ -135,7 +135,7 @@ class LoginWindow:
         
         tk.Label(
             footer_frame,
-            text="Clean Car © 2025 | Desarrollado por Victorius",
+            text="Quili Wash © 2025 | Desarrollado por Quili Soft",
             font=('Segoe UI', 9),
             fg='#6c757d',
             bg='white'

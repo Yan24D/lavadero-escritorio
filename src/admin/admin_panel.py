@@ -45,7 +45,7 @@ class AdminPanel:
         # Configurar ventana
         self.parent.configure(bg='#f8fafc')
         self.parent.geometry("1600x1000")
-        self.parent.title("Clean Car - Panel Administrador")
+        self.parent.title("Quili Wash - Panel Administrador")
         
         # Header fijo
         self.create_header()
@@ -210,7 +210,7 @@ class AdminPanel:
         
         tk.Label(
             info_frame,
-            text="Clean Car Sistema",
+            text="Quili Wash Sistema",
             font=('Segoe UI', 10, 'bold'),
             fg='#6b7280',
             bg='white'

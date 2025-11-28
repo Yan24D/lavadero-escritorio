@@ -63,7 +63,7 @@ class CashModule(BaseModule):
         actions_frame.pack(fill='x', pady=(0, 20))
         
         export_btn = self.create_button(
-            actions_frame, "📊 Exportar CSV",
+            actions_frame, "📊 Exportar Excel",
             self.export_csv, bg_color='#059669'
         )
         export_btn.pack(side='left', padx=(0, 10))

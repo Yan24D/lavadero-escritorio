@@ -65,7 +65,7 @@ class SecretaryPanel:
         
         title_label = tk.Label(
             left_frame,
-            text="Clean Car - Panel Secretario",
+            text="Quili Wash - Panel Secretario",
             font=('Segoe UI', 18, 'bold'),
             fg='white',
             bg='#2563eb'
@@ -183,7 +183,7 @@ class SecretaryPanel:
         
         footer_label = tk.Label(
             footer_frame,
-            text="Clean Car Sistema\nv1.0 - 2025",
+            text="Quili Wash Sistema\nv1.0 - 2025",
             font=('Segoe UI', 9),
             fg='#94a3b8',
             bg='#0f172a',

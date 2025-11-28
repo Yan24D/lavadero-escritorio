@@ -17,7 +17,6 @@ class ServiciosModule(BaseModule):
             'motorcycle': 'Motocicleta',
             'car': 'Automóvil', 
             'pickup': 'Camioneta',
-            'suv': 'SUV',
             'truck': 'Camión'
         }
         
